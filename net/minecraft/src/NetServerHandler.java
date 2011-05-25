@@ -129,7 +129,7 @@ public class NetServerHandler extends NetHandler
                 }
                 if(Math.abs(packet10flying.xPosition) > 32000000D || Math.abs(packet10flying.zPosition) > 32000000D)
                 {
-                    kickPlayer("Illegal position");
+                    kickPlayer("Illegal position. Kicked");
                     return;
                 }
             }
@@ -414,8 +414,10 @@ public class NetServerHandler extends NetHandler
             s = (new StringBuilder()).append("* ").append(playerEntity.username).append(" ").append(s.substring(s.indexOf(" ")).trim()).toString();
             logger.info(s);
             mcServer.configManager.sendPacketToAllPlayers(new Packet3Chat(s));
-        } else
-        if(s.toLowerCase().startsWith("/kill"))
+        } else if(s.toLowerCase().startsWith("/reload")) {
+        	mcServer.configManager.sendPacketToAllPlayers(new Packet3Chat("Reloading Server Files and Plugins"));
+        }
+        else if(s.toLowerCase().startsWith("/kill"))
         {
             playerEntity.attackEntityFrom(null, 1000);
         } else

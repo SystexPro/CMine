@@ -4,9 +4,12 @@ package net.minecraft.src;
 // Decompiler options: packimports(3) braces deadcode 
 
 import java.io.*;
+import org.cmine.main.commands.*;
 
 public class Packet3Chat extends Packet
 {
+	
+	public Commands commands;
 
     public Packet3Chat()
     {

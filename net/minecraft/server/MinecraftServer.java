@@ -19,6 +19,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.cmine.main.CMine;
+import org.cmine.main.plugins.Plugins;
+
 public class MinecraftServer
     implements Runnable, ICommandListener
 {
@@ -40,12 +43,19 @@ public class MinecraftServer
         threadcommandreader.setDaemon(true);
         threadcommandreader.start();
         ConsoleLogManager.init();
-        logger.info("Starting minecraft server version Beta 1.5_02");
+        logger.info("Starting CMine for Minecraft 1.5_2");
         if(Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L)
         {
             logger.warning("**** NOT ENOUGH RAM!");
             logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
         }
+        Plugins plug = new Plugins();
+        plug.createPluginFolder();
+        logger.info("Loading Build #600");
+        logger.info("Loading Plugins...");
+        if(this.pvpOn) {
+        	logger.info("PVP is enabled");
+        } 
         logger.info("Loading properties");
         propertyManagerObj = new PropertyManager(new File("server.properties"));
         String s = propertyManagerObj.getStringProperty("server-ip", "");
@@ -340,14 +350,16 @@ public class MinecraftServer
 
     public static void main(String args[])
     {
-        //StatList.func_27092_a();
+      //  StatList.func_27092_a();
         try
         {
             MinecraftServer minecraftserver = new MinecraftServer();
-            if(!GraphicsEnvironment.isHeadless() && (args.length <= 0 || !args[0].equals("nogui")))
+            /**if(!GraphicsEnvironment.isHeadless() && (args.length <= 0 || !args[0].equals("nogui")))
             {
                 ServerGUI.initGui(minecraftserver);
             }
+            */
+            
             (new ThreadServerApplication("Server thread", minecraftserver)).start();
         }
         catch(Exception exception)
